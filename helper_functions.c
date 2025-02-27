@@ -1,5 +1,23 @@
 #include "pipex.h"
 
+char	*ft_strchr(const char *s, int c)
+{
+	int		i;
+	char	*str;
+
+	i = 0;
+	str = (char *)s;
+	while (str[i])
+	{
+		if (str[i] == (char)c)
+			return (&str[i]);
+		i++;
+	}
+	if ((char)c == '\0')
+		return (&str[i]);
+	return (NULL);
+}
+
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;

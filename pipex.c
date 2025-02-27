@@ -18,6 +18,7 @@ void execut_commend(char **av, char **envp)
 	char *PATH;
 	char **cmd_path;
 	char *full_path;
+	char *tmp;
 	char **cmd;
 	int i;
 	
@@ -34,24 +35,33 @@ void execut_commend(char **av, char **envp)
 		error_message("Error retriving the path");
 	cmd_path = ft_split(PATH);
 	if (!cmd_path)
+	{
+		free(PATH);
 		error_message("Error happend while using split");
+	}
 	cmd = ft_split(av[2]);
-	if (!cmd)
+	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
 	{
 		ft_free(cmd_path);
+		ft_free(cmd);
+		free(PATH);
 		error_message("Error happend while using split");
 	}
 	i = 0;
 	while (cmd_path[i])
 	{
-		full_path = ft_strjoin(cmd_path[i], "/");
-		full_path = ft_strjoin(full_path, cmd[0]);
+		tmp = ft_strjoin(cmd_path[i], "/");
+		full_path = ft_strjoin(tmp, cmd[0]);
+		free(tmp);
 
-		if (access(full_path, X_OK) == 0)
+		if (access(full_path, X_OK) == 0 || access(cmd[0], X_OK) == 0)
 		{
 			execve(full_path, cmd, envp);
-			error_message("execve Error:");
 			free(full_path);
+			ft_free(cmd_path);
+			ft_free(cmd);
+			free(PATH);
+			error_message("execve Error:");
 			break;
 		}
 		free(full_path);
@@ -61,8 +71,12 @@ void execut_commend(char **av, char **envp)
 	{
 		ft_free(cmd_path);
 		ft_free(cmd);
+		free(PATH);
 		error_message("Commend not found");
 	}
+	ft_free(cmd_path);
+    ft_free(cmd);
+    free(PATH);
 }
 
 void execut_commend2(char **av, char **envp)
@@ -70,6 +84,7 @@ void execut_commend2(char **av, char **envp)
 	char *PATH;
 	char **cmd_path;
 	char *full_path;
+	char *tmp;
 	char **cmd;
 	int i;
 	
@@ -86,24 +101,33 @@ void execut_commend2(char **av, char **envp)
 		error_message("Error retriving the path");
 	cmd_path = ft_split(PATH);
 	if (!cmd_path)
+	{
+		free(PATH);
 		error_message("Error happend while using split");
+	}
 	cmd = ft_split(av[3]);
-	if (!cmd)
+	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
 	{
 		ft_free(cmd_path);
+		ft_free(cmd);
+		free(PATH);
 		error_message("Error happend while using split");
 	}
 	i = 0;
 	while (cmd_path[i])
 	{
-		full_path = ft_strjoin(cmd_path[i], "/");
-		full_path = ft_strjoin(full_path, cmd[0]);
+		tmp = ft_strjoin(cmd_path[i], "/");
+		full_path = ft_strjoin(tmp, cmd[0]);
+		free(tmp);
 
-		if (access(full_path, X_OK) == 0)
+		if (access(full_path, X_OK) == 0 || access(cmd[0], X_OK) == 0)
 		{
 			execve(full_path, cmd, envp);
-			error_message("execve Error:");
 			free(full_path);
+			ft_free(cmd_path);
+			ft_free(cmd);
+			free(PATH);
+			error_message("execve Error:");
 			break;
 		}
 		free(full_path);
@@ -113,8 +137,12 @@ void execut_commend2(char **av, char **envp)
 	{
 		ft_free(cmd_path);
 		ft_free(cmd);
+		free(PATH);
 		error_message("Commend not found");
 	}
+	ft_free(cmd_path);
+	ft_free(cmd);
+	free(PATH);
 }
 
 void child_process1(char **av, int *fds, int *pip, char **envp)
@@ -153,11 +181,17 @@ int main(int ac, char **av, char **envp)
 		error_message("Pipe Error");
 	fds[0] = open(av[1], O_RDONLY);
 	if (fds[0] == -1)
-		error_message("Error:");
+	{
+		close(pip[0]);
+		close(pip[1]);
+		error_message("Error");
+	}
 	fds[1] = open(av[4], O_WRONLY | O_CREAT | O_TRUNC , 0644);
 	if (fds[1] == -1)
 	{
 		close(fds[0]);
+		close(pip[0]);
+		close(pip[1]);
 		error_message("Error:");
 	}
 	id1 = fork();
@@ -183,7 +217,7 @@ int main(int ac, char **av, char **envp)
 	}
 	if (id2 == 0)
 		child_process2(av, fds, pip, envp);
-	waitpid(id1, NULL, 0);
+	waitpid(id2, NULL, 0);
 	close(fds[0]);
 	close(fds[1]);
 	close(pip[0]);
