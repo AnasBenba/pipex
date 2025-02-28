@@ -205,7 +205,6 @@ int main(int ac, char **av, char **envp)
 	}
 	if (id1 == 0)
 		child_process1(av, fds, pip, envp);
-	waitpid(id1, NULL, 0);
 	id2 = fork();
 	if (id2 == -1)
 	{
@@ -217,10 +216,11 @@ int main(int ac, char **av, char **envp)
 	}
 	if (id2 == 0)
 		child_process2(av, fds, pip, envp);
-	waitpid(id2, NULL, 0);
 	close(fds[0]);
 	close(fds[1]);
 	close(pip[0]);
 	close(pip[1]);
+	waitpid(id1, NULL, 0);
+	waitpid(id2, NULL, 0);
 	return (0);
 }

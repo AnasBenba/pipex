@@ -17,6 +17,7 @@ int		ft_isspace(char c);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_isprint(int c);
 char	*ft_strchr(const char *s, int c);
+int ft_strcmp(const char *s1, const char *s2);
 
 
 #endif

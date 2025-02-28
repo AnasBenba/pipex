@@ -19,11 +19,15 @@ static char	*ft_word(char const *s, size_t *i)
         return (NULL);
     while (s[(*i)] && !ft_isspace(s[(*i)]))
     {
-        ptr[y] = s[(*i)];
+        if (s[(*i)] != '\'' && s[(*i)] != '\"')
+        {
+            ptr[y] = s[(*i)];
+            y++;
+        }
         (*i)++;
-        y++;
     }
     ptr[y] = '\0';
+    printf("%s\n", ptr);
     (*i)++;
     return (ptr);
 }
@@ -93,6 +97,7 @@ char	**ft_split(char const *s)
     if (!s)
         return (NULL);
     len = ft_count_word(s);
+    printf("%ld\n", len);
     ptr = (char **)malloc(sizeof(char *) * (len + 1));
     if (!ptr)
         return (NULL);
