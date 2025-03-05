@@ -175,7 +175,7 @@ int main(int ac, char **av, char **envp)
 	int id1;
 	int id2;
 
-    if (ac != 5)
+    if (ac < 4 || ac > 5)
 		error_message("Usage: ./pipex file1 cmd1 cmd2 file2");
 	if (pipe(pip) == -1)
 		error_message("Pipe Error");
@@ -186,7 +186,10 @@ int main(int ac, char **av, char **envp)
 		close(pip[1]);
 		error_message("Error");
 	}
-	fds[1] = open(av[4], O_WRONLY | O_CREAT | O_TRUNC , 0644);
+	if (ac == 5)
+		fds[1] = open(av[4], O_WRONLY | O_CREAT | O_TRUNC , 0644);
+	else
+		fds[1] = open("outfile", O_WRONLY | O_CREAT | O_TRUNC , 0644);
 	if (fds[1] == -1)
 	{
 		close(fds[0]);

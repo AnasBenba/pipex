@@ -1,1 +1,5 @@
-10
+error_handling.c
+ft_split.c
+ft_strjoin.c
+helper_functions.c
+pipex.c
