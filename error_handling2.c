@@ -1,42 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handling.c                                   :+:      :+:    :+:   */
+/*   error_handling2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abenba <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 14:42:53 by abenba            #+#    #+#             */
-/*   Updated: 2025/03/05 14:42:54 by abenba           ###   ########.fr       */
+/*   Created: 2025/03/05 14:42:19 by abenba            #+#    #+#             */
+/*   Updated: 2025/03/05 14:42:21 by abenba           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	error_message(char *str)
+void	fd_0_error(int pip[])
 {
-	perror(str);
-	exit(1);
+	close(pip[0]);
+	close(pip[1]);
+	error_message("Error");
 }
 
-int	ft_isspace(char c)
+void	fd_1_error(int fd[], int pip[])
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r' || c == ':');
+	close(fd[0]);
+	close(pip[0]);
+	close(pip[1]);
+	error_message("Error:");
 }
 
-int	ft_isprint(int c)
+void	fork_error(int fds[], int pip[])
 {
-	if (c >= 32 && c <= 126)
-		return (1);
-	return (0);
+	close_fds(fds, pip);
+	error_message("Fork Error:");
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
+void	cmd_error(char **cmd, char **cmd_path, char *PATH)
 {
-	while (*s1 && (*s1 == *s2))
-	{
-		s1++;
-		s2++;
-	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+	ft_free(cmd_path);
+	ft_free(cmd);
+	free(PATH);
+	error_message("Error happend while using split");
 }

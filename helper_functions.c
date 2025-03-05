@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   helper_functions.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abenba <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/05 14:50:01 by abenba            #+#    #+#             */
+/*   Updated: 2025/03/05 14:50:02 by abenba           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 char	*ft_strchr(const char *s, int c)
@@ -39,10 +51,10 @@ size_t	ft_strlen(const char *c)
 	size_t	len;
 
 	len = 0;
-    if (!c)
-    {
-        return (0);
-    }
+	if (!c)
+	{
+		return (0);
+	}
 	while (c[len])
 		len++;
 	return (len);

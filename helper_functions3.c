@@ -1,42 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_handling.c                                   :+:      :+:    :+:   */
+/*   helper_functions3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abenba <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 14:42:53 by abenba            #+#    #+#             */
-/*   Updated: 2025/03/05 14:42:54 by abenba           ###   ########.fr       */
+/*   Created: 2025/03/05 14:49:01 by abenba            #+#    #+#             */
+/*   Updated: 2025/03/05 14:49:03 by abenba           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	error_message(char *str)
+void	cmd_not_found(char **cmd_path, char **cmd, char *path)
 {
-	perror(str);
-	exit(1);
+	ft_free(cmd_path);
+	ft_free(cmd);
+	free(path);
+	error_message("Commend not found");
 }
 
-int	ft_isspace(char c)
+void	free_all(char **cmd_path, char **cmd, char *path)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f'
-		|| c == '\r' || c == ':');
+	ft_free(cmd_path);
+	ft_free(cmd);
+	free(path);
 }
 
-int	ft_isprint(int c)
+void	is_qou(char **ptr, char const *s, int i, size_t *y)
 {
-	if (c >= 32 && c <= 126)
-		return (1);
-	return (0);
-}
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && (*s1 == *s2))
-	{
-		s1++;
-		s2++;
-	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+	(*ptr)[*y] = s[i];
+	(*y)++;
 }
